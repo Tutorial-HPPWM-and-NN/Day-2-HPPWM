@@ -1,79 +1,82 @@
-# Ejercicio 1: Entrenamiento de una Red MLP para SHC-PWM
+# Exercise 1: MLP Training for SHC-PWM
 
-## Objetivo del Ejercicio
-Implementar una red neuronal multicapa (MLP) capaz de aproximar el mapeo entre referencias armónicas de entrada y ángulos óptimos de conmutación de salida.
+## Objective
 
-El modelo recibirá como entradas las variables:
+Implement a multi-layer perceptron (MLP) capable of approximating the mapping
+between the harmonic reference inputs and the optimal switching angles of the
+SHC-PWM problem.
 
-- `m1`
-- `m5`
-- `m7`
-- `m11`
-- `m13`
-- `m17`
-- `m19`
-- `phi5`
+The model receives as inputs:
+- `m1`, `m5`, `m7`, `m11`, `m13`, `m17`, `m19` — harmonic magnitudes
+- `phi5` — phase reference for the 5th harmonic
 
-y deberá predecir los ángulos:
+and must predict the switching angles:
+- `alpha_1` through `alpha_17`
 
-- `alpha_1` hasta `alpha_17`
+## Methodological Note
 
-El propósito de este ejercicio es construir la primera etapa del reemplazo de tablas de búsqueda por una aproximación funcional basada en aprendizaje supervisado.
+This problem does not follow the classical statistical learning paradigm
+oriented toward generalization over arbitrary unseen data. The dataset is
+an analytically exact solution manifold generated offline by the hybrid
+optimizer from Day 1 Exercise 4.
 
-## Nota metodológica importante
-En este problema no se adopta el paradigma clásico de aprendizaje estadístico orientado a generalización sobre datos arbitrarios no vistos. El dataset corresponde a un espacio solución generado numéricamente offline y acotado a una región válida de operación.
+Therefore, the primary objective is high-fidelity replication of the solution
+manifold within the trained domain. Consequently:
+- No test split is used.
+- Only a very small validation fraction (1%) is kept for internal monitoring.
+- Extrapolation outside the training range is not expected and would produce
+  invalid switching patterns.
 
-Por tanto, el objetivo principal es lograr una replicación de alta fidelidad del manifold de soluciones dentro del dominio entrenado. En consecuencia:
+## Instructions
 
-- no se utiliza un conjunto de prueba clásico,
-- se deja solo una fracción muy pequeña para validación interna,
-- no se busca extrapolación fuera del rango del dataset.
+Open `exercise_1_base.py` and complete the following tasks.
 
-## Estructura del directorio
+### Task 1: Load and Split the Dataset
 
-- `exercise_1_base.py`: archivo base incompleto para el trabajo práctico.
-- `exercise_1_solution.py`: solución completa del ejercicio.
-- `artifacts/`: carpeta de salida generada automáticamente al ejecutar el script.
+1. Load the CSV file from the `data/` folder.
+2. Separate input and output columns correctly.
+3. Split into training and a small validation subset.
 
-## Instrucciones
-Abra el archivo `exercise_1_base.py`.
+### Task 2: Input Preprocessing
 
-### Tarea 1: Carga y separación del dataset
-Complete la lógica para:
-1. Cargar el archivo CSV.
-2. Separar correctamente las columnas de entrada y salida.
-3. Dividir el dataset en conjunto de entrenamiento y una validación interna mínima.
+Implement input normalization using a StandardScaler fitted on the training
+data. Save the scaler — it is required in all subsequent exercises.
 
-### Tarea 2: Preprocesamiento
-Implemente la normalización de las variables de entrada utilizando un escalador apropiado.
-Guarde este escalador, ya que será requerido en las etapas posteriores.
+### Task 3: Define the Model
 
-### Tarea 3: Definición del modelo
-Construya una red MLP densa para regresión, definiendo:
-1. Capa de entrada consistente con las 8 variables del problema.
-2. Capas ocultas configurables.
-3. Capa de salida de dimensión 17 para predecir los ángulos.
+Build a dense MLP for regression:
+1. Input layer consistent with the 8 input variables.
+2. Configurable hidden layers (default: [128, 128, 64] with ReLU).
+3. Linear output layer of dimension 17.
+4. Compile with Adam optimizer and MSE loss.
 
-### Tarea 4: Entrenamiento y evaluación
-Entrene el modelo y evalúe su desempeño.
-Reporte al menos:
-1. Pérdida final de entrenamiento.
-2. Pérdida de validación, si se utiliza.
-3. Error de ajuste sobre el conjunto de entrenamiento.
-4. Error de ajuste sobre la partición de validación, si existe.
+### Task 4: Train and Evaluate
 
-## Análisis de Resultados
-Ejecute el script en su entorno.
+Train the model and report:
+1. Final training loss.
+2. Validation loss (if applicable).
+3. MAE on the training set.
+4. MAE on the validation set (if applicable).
 
-1. Verifique que la pérdida disminuya de forma estable durante el entrenamiento.
-2. Si usa validación, confirme que la discrepancia entre entrenamiento y validación sea baja.
-3. Analice si la red logra replicar con alta fidelidad los 17 ángulos de salida.
-4. Verifique que se generen correctamente los siguientes artefactos:
+## Analysis
+
+1. Verify that the training loss decreases steadily.
+2. If using validation, confirm that the train/val gap remains small.
+3. Analyze whether the network replicates the 17 output angles with
+   high fidelity.
+4. Verify that the following artifacts are generated in `artifacts/`:
    - `mlp_fp32_weights.npz`
    - `input_scaler.joblib`
    - `mlp_config.json`
    - `dataset_splits.npz`
    - `training_history.csv`
 
-## Resultado esperado
-Al finalizar este ejercicio, deberá contar con un modelo entrenado en precisión flotante, su configuración estructural y el escalador de entrada almacenado. Todos estos elementos serán utilizados en los ejercicios siguientes.
+## Expected Result
+
+A trained model in FP32 precision, its structural configuration, and the
+input scaler — all stored as artifacts for use in the following exercises.
+
+## Files
+
+- `exercise_1_base.py` — incomplete script for in-class work.
+- `exercise_1_solution.py` — complete reference solution.
