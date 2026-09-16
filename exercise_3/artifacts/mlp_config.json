@@ -1,0 +1,11 @@
+{
+  "input_dim": 8,
+  "output_dim": 17,
+  "hidden_units": [
+    128,
+    128,
+    64
+  ],
+  "hidden_activation": "relu",
+  "output_activation": "linear"
+}

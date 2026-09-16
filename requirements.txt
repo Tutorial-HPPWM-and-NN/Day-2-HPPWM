@@ -1,0 +1,18 @@
+# Day 2 — Deep Learning and Edge deployment for HPPWM
+#
+# Requires Python 3.10 exactly (see README.md).
+#
+# tf-keras (Keras 2) is installed alongside tensorflow because
+# tensorflow_model_optimization (used in Exercise 2, weight pruning) does
+# not yet support the Keras 3 model object, which has been the default
+# Keras since TensorFlow 2.16. Before running ANY script in this day, you
+# must set the environment variable TF_USE_LEGACY_KERAS=1 (see README.md)
+# so that tf.keras uses the Keras 2 shim instead of Keras 3.
+numpy==2.1.3
+pandas==2.2.3
+scikit-learn==1.6.1
+joblib==1.4.2
+matplotlib==3.10.0
+tensorflow==2.20.0
+tf-keras==2.20.1
+tensorflow-model-optimization==0.8.0
