@@ -1,2 +1,0 @@
-baseline_loss,baseline_mae,baseline_mse_numpy,baseline_mae_numpy,pruned_loss,pruned_mae,pruned_mse_numpy,pruned_mae_numpy,baseline_zipped_weights_size_bytes,pruned_zipped_weights_size_bytes,target_sparsity
-0.004397211596369743,0.03417842835187912,0.004397211130708456,0.034178439527750015,0.009504416026175022,0.04766492545604706,0.009504416957497597,0.047664932906627655,101058,32990,0.8
