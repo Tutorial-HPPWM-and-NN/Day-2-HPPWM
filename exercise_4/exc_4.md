@@ -63,7 +63,8 @@ Save the result as `exercise_3/artifacts/model_pruned_int8_tflm.tflite`.
 
 ### Task 2: Generate the C++ Model Array
 
-Convert the .tflite binary to a C++ byte array. In Git Bash:
+Convert the .tflite binary to a C++ byte array. 
+Go to the root folder of "exercise_3". CLock right bottom and open git bash. Then in Git Bash run:
 
     cd exercise_3/artifacts
     xxd -i model_pruned_int8_tflm.tflite > model_data.cc
