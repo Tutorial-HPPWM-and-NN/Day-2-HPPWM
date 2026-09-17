@@ -24,8 +24,7 @@ the Zybo Z7-10.
 1. Open Vivado 2022.2.
 2. **Create Project** → Next → RTL Project → Next.
 3. **Default Part** → **Boards** tab → search **Zybo Z7-10** → select → Next → Finish.
-   *(If it does not appear, install the board file via Tools → Vivado Store,
-   or manually create the `board_files` folder under `<Vivado>/data/boards/`.)*
+   *(If it does not appear, click refresh and select Zybo Z7-10 v1.1. You can also dowload the files from [digilent](https://digilent.com/reference/programmable-logic/zybo-z7/start))*
 4. **Flow Navigator** → **Create Block Design** → name `design_1` → OK.
 5. Click **+** → search `Zynq7 Processing System` → double-click.
 6. Click **Run Block Automation** → OK.
