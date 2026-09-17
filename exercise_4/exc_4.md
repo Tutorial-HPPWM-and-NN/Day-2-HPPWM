@@ -31,8 +31,10 @@ Additionally:
 - Vivado 2022.2 with Zynq-7000 device support.
 - Vitis 2022.2.
 - Zybo Z7-10 connected via micro-USB data cable.
-- TFmicroZynq cloned: https://github.com/SensorsINI/TFmicroZynq
-- Git Bash available for the xxd command.
+- Install Git Bash from [here](https://git-scm.com/install/windows) to be able to use the xxd command.
+- Once gitbash installed, run thew following command at DOS: "git clone https://github.com/SensorsINI/TFmicroZynq".
+    - Run the line inside the folder where you want to clone the repo. 
+    - Command xxd transform the file .tflite to C++. THis is required to run it into Vitis. 
 
 ## Repository Structure
 
