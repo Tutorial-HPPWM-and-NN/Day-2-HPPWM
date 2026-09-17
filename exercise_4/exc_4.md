@@ -64,22 +64,20 @@ Save the result as `exercise_3/artifacts/model_pruned_int8_tflm.tflite`.
 ### Task 2: Generate the C++ Model Array
 
 Convert the .tflite binary to a C++ byte array. 
-Go to the root folder of "exercise_3". CLock right bottom and open git bash. Then in Git Bash run:
+Go to the root folder of "exercise_3". Click right bottom and open git bash. Then in Git Bash run:
 
     cd exercise_3/artifacts
     xxd -i model_pruned_int8_tflm.tflite > model_data.cc
+### Task 3: Create Zybo Project.
+Go to zybo folere [here](https://github.com/Tutorial-HPPWM-and-NN/Day-2-HPPWM/tree/main/exercise_4/zybo) and follow the instructions of README_vitis.md.
 
-### Task 3: Cross-Validation
+### Task 4: Cross-Validation
 
 After running the C++ program on the Zybo Z7:
 
 1. Copy the 17 alpha values (in mrad) from the UART serial terminal.
 2. Fill in zybo_results_mrad in the script.
 3. Run to compare FP32, INT8 and Zybo columns.
-
-## Hardware Setup
-
-Follow zybo/README_vitis.md for the complete Vitis project setup.
 
 ## Expected Output Format
 
