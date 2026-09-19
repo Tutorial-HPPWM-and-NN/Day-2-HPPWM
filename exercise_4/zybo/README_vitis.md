@@ -149,6 +149,14 @@ MAE = XX mrad
 ============================================
 ```
 
+
+> [!TIP]
+> **Customizing Test Inputs**: The default test input in `main.cc` corresponds to Sample 0 from the dataset. To test different harmonic references ($m_1, m_5, \dots, \phi_5$) or any other dataset row, run:
+> ```bash
+> python generate_test_sample.py --sample <index>
+> ```
+> This tool applies the `StandardScaler` from Exercise 1 and outputs the exact C++ definitions for `input_scaled` and `true_angles` ready to copy into `main.cc`.
+
 Copy the 17 predicted mrad values and use them in Step 4 of
 `exercise_4_solution.py` for cross-validation.
 
