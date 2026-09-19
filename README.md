@@ -29,6 +29,7 @@ with the complete solution, and a local instructions file (README).
 * **Exercise_3 (Quantization to TFLite):** Conversion of the trained model
   to quantized TensorFlow Lite. Metrics before and after quantization are
   compared to evaluate the induced degradation.
+* **generate_test_sample.py:** Helper script to extract test samples from the dataset, normalize harmonic references with StandardScaler, and format C++ code for `main.cc`.
 * **Exercise_4 (Deployment on Zybo Z7):** Execution of the quantized TFLite
   model on the ARM processor of the Zybo Z7 SoC, validating embedded
   inference and execution latency.
@@ -50,6 +51,22 @@ and the optimal output angles:
 
 **Outputs**
 - `alpha_1` through `alpha_17`
+
+## Test Vector Generation for Embedded Deployment
+
+In Exercise 4 (and Day 3), the embedded target (`main.cc`) runs inference on
+sample vectors to verify accuracy against ground-truth angles:
+
+* **Sample 0 (default):** $m_1 = 0.85$, $m_5 = 0.01$, $m_7=0, \dots, \phi_5 = -\pi$.
+* **StandardScaler Normalization:** Raw inputs are normalized using the scaler
+  parameters ($\mu, \sigma$) saved in `exercise_1/artifacts/input_scaler.joblib`.
+* **Ground Truth Angles:** Extracted from the dataset for hardware vs software comparison.
+
+To inspect or generate C++ declarations for any dataset index:
+
+```bash
+python generate_test_sample.py --sample 0
+```
 
 ## Requirements and Environment Setup
 
