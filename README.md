@@ -32,7 +32,9 @@ with the complete solution, and a local instructions file (README).
 * **generate_test_sample.py:** Helper script to extract test samples from the dataset, normalize harmonic references with StandardScaler, and format C++ code for `main.cc`.
 * **Exercise_4 (Deployment on Zybo Z7):** Execution of the quantized TFLite
   model on the ARM processor of the Zybo Z7 SoC, validating embedded
-  inference and execution latency.
+  inference and execution latency. This exercise requires the Xilinx tools
+  and the board listed below; the step-by-step Vivado/Vitis project setup is
+  in [`exercise_4/zybo/README_vitis.md`](exercise_4/zybo/README_vitis.md).
 
 ## Dataset Used
 
@@ -69,6 +71,13 @@ python generate_test_sample.py --sample 0
 ```
 
 ## Requirements and Environment Setup
+
+There are two sets of requirements on this day:
+
+| | Needed for | Details |
+|---|---|---|
+| **Python 3.10 environment** | Exercises 1, 2, 3 and the PC part of Exercise 4 | Sections 1–4 below |
+| **Xilinx tools + Zybo Z7-10 board** | Exercise 4 only (bare-metal deployment) | Section 5 below and [`exercise_4/zybo/README_vitis.md`](exercise_4/zybo/README_vitis.md) |
 
 **Python 3.10 is required** (an exact match, not just "3.10 or newer"), to
 avoid compatibility issues between TensorFlow, `tensorflow_model_optimization`,
@@ -155,3 +164,33 @@ TF_USE_LEGACY_KERAS=1
 VS Code automatically loads that `.env` file for the selected environment,
 so both the integrated terminal and the ▶ Run button are configured with
 no extra steps.
+
+### 5. Xilinx tools and hardware (Exercise 4 only)
+
+Exercise 4 runs the quantized model bare-metal on the ARM Cortex-A9 of the
+Zybo Z7-10. In addition to the Python environment above, you need:
+
+- **Vivado 2022.2** with Zynq-7000 device support (the free Standard /
+  WebPACK edition is enough — the Zybo Z7-10 needs no license).
+- **Vitis 2022.2** (installed together with Vivado by the Xilinx Unified
+  Installer 2022.2).
+- The **Zybo Z7-10 board files** for Vivado (Digilent):
+  https://digilent.com/reference/programmable-logic/zybo-z7/start
+- A **Zybo Z7-10** connected through a micro-USB *data* cable (PROG/UART
+  port), jumper **JP5** in the **JTAG** position, and a serial terminal at
+  115,200 baud.
+- The **TFmicroZynq** repository (TensorFlow Lite Micro sources for Zynq):
+  ```bash
+  git clone https://github.com/SensorsINI/TFmicroZynq.git
+  ```
+
+The complete project setup — hardware design in Vivado, platform and
+application in Vitis, include paths, compiler flags and running on the
+board — is described step by step in
+[`exercise_4/zybo/README_vitis.md`](exercise_4/zybo/README_vitis.md).
+
+> [!NOTE]
+> Without the board you can still complete Tasks 1 and 2 of Exercise 4
+> (reconversion for TFLite Micro and generation of `model_data.cc`) and the
+> PC side of the cross-validation; only the Zybo column of the comparison
+> table needs the hardware.
