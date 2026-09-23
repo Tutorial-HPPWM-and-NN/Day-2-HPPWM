@@ -29,9 +29,9 @@
 #include "xil_printf.h"
 
 // Model array generated with: xxd -i model_pruned_int8_tflm.tflite > model_data.cc
-// Variable name depends on the filename — check model_data.cc if linker fails.
-extern const unsigned char model_pruned_int8_tflm_tflite[];
-extern const unsigned int  model_pruned_int8_tflm_tflite_len;
+// Variable name depends on the filename â€” check model_data.cc if linker fails.
+extern const unsigned char model_pruned_int8_tflm[];
+extern const unsigned int  model_pruned_int8_tflm_len;
 
 // Tensor arena: memory pool for TFLM activations and intermediate tensors.
 // Increase if AllocateTensors() returns an error.
@@ -47,15 +47,15 @@ int main() {
 
     xil_printf("=== HPPWM TFLite Micro on Zybo Z7 ===\r\n");
 
-    // ── Load model ────────────────────────────────────────────────────────────
-    const tflite::Model* model = tflite::GetModel(model_pruned_int8_tflm_tflite);
+    // â”€â”€ Load model â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    const tflite::Model* model = tflite::GetModel(model_pruned_int8_tflm);
 
     if (model->version() != TFLITE_SCHEMA_VERSION) {
         xil_printf("ERROR: Model schema version mismatch.\r\n");
         return -1;
     }
 
-    // ── Register operations used by the model ─────────────────────────────────
+    // â”€â”€ Register operations used by the model â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // The MLP uses: fully connected layers, ReLU activations, and
     // quantize/dequantize nodes at the input and output boundaries.
     using OpResolver = tflite::MicroMutableOpResolver<4>;
@@ -65,7 +65,7 @@ int main() {
     op_resolver.AddQuantize();
     op_resolver.AddDequantize();
 
-    // ── Build interpreter ─────────────────────────────────────────────────────
+    // â”€â”€ Build interpreter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     tflite::MicroInterpreter interpreter(
         model, op_resolver, tensor_arena, kTensorArenaSize);
 
@@ -74,7 +74,7 @@ int main() {
         return -1;
     }
 
-    // ── Test input (sample 0 from dataset, pre-scaled with StandardScaler) ────
+    // â”€â”€ Test input (sample 0 from dataset, pre-scaled with StandardScaler) â”€â”€â”€â”€
     //
     // Raw values: m1=0.85, m5=0.01, m7=0, m11=0, m13=0, m17=0, m19=0, phi5=-pi
     //
@@ -103,7 +103,7 @@ int main() {
         1.7001f, 1.8199f, 1.9369f, 2.0869f, 2.1774f
     };
 
-    // ── Quantize and load input tensor ────────────────────────────────────────
+    // â”€â”€ Quantize and load input tensor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     TfLiteTensor* input   = interpreter.input(0);
     float         inp_s   = input->params.scale;
     int           inp_zp  = input->params.zero_point;
@@ -115,13 +115,13 @@ int main() {
         input->data.int8[i] = (int8_t)q;
     }
 
-    // ── Run inference ─────────────────────────────────────────────────────────
+    // â”€â”€ Run inference â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (interpreter.Invoke() != kTfLiteOk) {
         xil_printf("ERROR: Invoke() failed.\r\n");
         return -1;
     }
 
-    // ── Dequantize and print results ──────────────────────────────────────────
+    // â”€â”€ Dequantize and print results â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     TfLiteTensor* output  = interpreter.output(0);
     float         out_s   = output->params.scale;
     int           out_zp  = output->params.zero_point;
@@ -151,3 +151,4 @@ int main() {
 
     return 0;
 }
+
