@@ -1,4 +1,4 @@
-/**
+/*
  * main.cc
  * =======
  * Bare-metal inference of the HPPWM neural network on the ARM Cortex-A9
