@@ -60,7 +60,14 @@ def build_base_model_from_config(config: dict) -> tf.keras.Model:
     # 5. Compile the model
     raise NotImplementedError("Complete the base model reconstruction.")
 
-
+def compile_regression_model(model: tf.keras.Model, learning_rate: float = LEARNING_RATE):
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
+        loss="mse",
+        metrics=["mae"],
+    )
+    return model
+    
 def load_weights_from_npz(weights_path: Path):
     # TODO:
     # 1. Load the NPZ file
